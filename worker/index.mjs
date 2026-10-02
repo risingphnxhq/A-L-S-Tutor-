@@ -28,7 +28,7 @@ function jsonResponse(body, status, origin) {
   });
   if (origin && ALLOWED_ORIGINS.has(origin)) {
     headers.set("Access-Control-Allow-Origin", origin);
-    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     headers.set("Access-Control-Allow-Headers", "Content-Type");
     headers.set("Access-Control-Max-Age", "86400");
   }
@@ -81,8 +81,8 @@ function parseModelResponse(result) {
 function guidedFallback() {
   return {
     kind: "hint",
-    message: "Let’s keep the next move small. Identify the operation being applied to the variable, then use the inverse operation on both sides so the equation stays balanced.",
-    next_prompt: "What operation do you see in your problem?",
+    message: "I’ll hold the complete solution for now. Tell me the step you tried, or ask for one hint, and we’ll work through the next move together.",
+    next_prompt: "What have you tried so far?",
     lesson_ref: null
   };
 }
@@ -93,6 +93,7 @@ export default {
     const url = new URL(request.url);
     if (!origin || !ALLOWED_ORIGINS.has(origin)) return jsonResponse({ error: "This tutor is available only from A. L. S. Tutor." }, 403, null);
     if (request.method === "OPTIONS") return jsonResponse({}, 204, origin);
+    if (request.method === "GET" && url.pathname === "/health") return jsonResponse({ status: "ready" }, 200, origin);
     if (request.method !== "POST" || url.pathname !== "/api/tutor") return jsonResponse({ error: "Not found." }, 404, origin);
     if (!request.headers.get("content-type")?.toLowerCase().includes("application/json")) return jsonResponse({ error: "Send a math question as JSON." }, 415, origin);
 

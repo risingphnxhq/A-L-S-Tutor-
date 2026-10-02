@@ -2,8 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import worker, { DailyBudget } from "./index.mjs";
 
-function makeRequest(body, origin = "https://alstutor.com", method = "POST") {
-  return new Request("https://api.alstutor.com/api/tutor", {
+function makeRequest(body, origin = "https://alstutor.com", method = "POST", path = "/api/tutor") {
+  return new Request("https://api.alstutor.com" + path, {
     method,
     headers: { Origin: origin, "Content-Type": "application/json", "CF-Connecting-IP": "192.0.2.1" },
     body: method === "POST" ? JSON.stringify(body) : undefined
@@ -29,6 +29,14 @@ test("rejects an unapproved web origin before model invocation", async () => {
   const env = mockEnv({});
   const response = await worker.fetch(makeRequest(validBody(), "https://example.com"), env);
   assert.equal(response.status, 403);
+  assert.equal(env.modelCalled, false);
+});
+
+test("health endpoint reports availability without calling AI", async () => {
+  const env = mockEnv({});
+  const response = await worker.fetch(makeRequest(null, "https://alstutor.com", "GET", "/health"), env);
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).status, "ready");
   assert.equal(env.modelCalled, false);
 });
 

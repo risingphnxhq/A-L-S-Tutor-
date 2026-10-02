@@ -94,13 +94,13 @@
      <div class="ai-chat" id="aiChat" aria-live="polite" aria-label="Tutor conversation"><div class="ai-message tutor"><strong>Tutor</strong><p>Hi. Paste or type one algebra problem, then tell me what you have tried. We’ll take it one move at a time.</p></div></div>
      <form class="ai-compose" onsubmit="sendAITutor(event)">
       <label class="sr-only" for="aiInput">Your math problem or question</label><textarea id="aiInput" rows="3" maxlength="1200" placeholder="Type the problem and where you got stuck…" aria-label="Your math problem or question"></textarea>
-      <div class="ai-send-row"><span id="aiStatus" role="status">Ready when you are.</span><button class="btn" id="aiSend" type="submit">Ask tutor</button></div>
+      <div class="ai-send-row"><span id="aiStatus" role="status">Checking tutor connection…</span><div class="ai-actions"><button class="btn secondary" type="button" onclick="listenToAITutor()">Speak question</button><button class="btn" id="aiSend" type="submit">Ask tutor</button></div></div>
      </form>
     </div>
     <aside class="panel ai-guide">
      <div class="eyebrow">HOW THIS TUTOR WORKS</div><h3>Small steps. Real understanding.</h3>
      <ol><li>It asks what you’re working on.</li><li>It offers a hint before a complete solution.</li><li>You try a step and can ask for feedback.</li><li>Lessons and Practice keep your progress checks clear.</li></ol>
-     <div class="ai-privacy"><strong>Your privacy</strong><p>This conversation stays in temporary browser memory and clears when you refresh. Your question and recent turns go to Cloudflare to create the reply. The app does not save chat transcripts. Leave out names, school details, and other personal information.</p><p>AI can make mistakes. Use Practice for scored answers; the AI tutor does not record mastery.</p></div>
+     <div class="ai-privacy"><strong>Your privacy</strong><p>This conversation stays in temporary browser memory and clears when you refresh. Your question and recent turns go to Cloudflare to create the reply. The app does not save chat transcripts. Leave out names, school details, and other personal information.</p><p>Spoken questions use the browser’s speech-recognition feature; some browsers send audio to their speech service. You can type instead.</p><p>AI can make mistakes. Use Practice for scored answers; the AI tutor does not record mastery.</p></div>
      <button class="btn outline ai-clear" type="button" onclick="clearAITutor()">Clear this conversation</button>
     </aside>
    </div>
@@ -372,7 +372,7 @@ renderUnits();updateStats();renderLesson();
 .ai-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(240px,.8fr);gap:18px;align-items:start}
 .ai-main{padding:22px;min-width:0}.ai-intro{display:flex;gap:13px;align-items:flex-start;padding:4px 0 16px;border-bottom:1px solid var(--line)}.ai-mark{flex:none;width:38px;height:38px;display:grid;place-items:center;background:var(--mint);color:var(--green);border-radius:12px;font-weight:800}.ai-intro strong{font-size:14px}.ai-intro p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
 .ai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:14px 0}.ai-quick button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 10px;font-size:10px;color:var(--green)}.ai-quick button:hover{border-color:#8fb6a0;background:#f8fbf8}
-.ai-chat{height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 0 14px}.ai-message{max-width:92%;border-radius:13px;padding:11px 13px;background:#edf4ef;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.ai-message.student{align-self:flex-end;background:var(--green);color:#fff}.ai-message p{margin:5px 0 0}.ai-message strong{font-size:10px;letter-spacing:.04em}.ai-next{font-weight:700;color:#315f4d}.ai-message.student .ai-next{color:#fff}.ai-speak{border:0;background:transparent;color:var(--green);text-decoration:underline;font-size:10px;padding:7px 0 0}.ai-compose{border-top:1px solid var(--line);padding-top:12px}.ai-compose textarea{width:100%;resize:vertical;min-height:74px;border:1px solid #d6e0d9;border-radius:11px;padding:11px 13px;outline:none;font:inherit;font-size:12px}.ai-compose textarea:focus{border-color:#579778;box-shadow:0 0 0 3px #57977820}.ai-send-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:9px}.ai-send-row span{font-size:10px;color:var(--muted)}.ai-send-row button:disabled{opacity:.6;cursor:wait}
+.ai-chat{height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 0 14px}.ai-message{max-width:92%;border-radius:13px;padding:11px 13px;background:#edf4ef;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.ai-message.student{align-self:flex-end;background:var(--green);color:#fff}.ai-message p{margin:5px 0 0}.ai-message strong{font-size:10px;letter-spacing:.04em}.ai-next{font-weight:700;color:#315f4d}.ai-message.student .ai-next{color:#fff}.ai-speak{border:0;background:transparent;color:var(--green);text-decoration:underline;font-size:10px;padding:7px 0 0}.ai-compose{border-top:1px solid var(--line);padding-top:12px}.ai-compose textarea{width:100%;resize:vertical;min-height:74px;border:1px solid #d6e0d9;border-radius:11px;padding:11px 13px;outline:none;font:inherit;font-size:12px}.ai-compose textarea:focus{border-color:#579778;box-shadow:0 0 0 3px #57977820}.ai-send-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:9px}.ai-send-row span{font-size:10px;color:var(--muted)}.ai-send-row button:disabled{opacity:.6;cursor:wait}.ai-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.ai-actions .btn{padding:10px 13px}
 .ai-guide{padding:21px}.ai-guide h3{margin:6px 0 10px;font-size:16px}.ai-guide ol{padding-left:18px;color:var(--muted);font-size:11px;line-height:1.65}.ai-guide li{padding:3px 0}.ai-privacy{margin-top:18px;border-radius:12px;background:#f7f8f4;padding:13px}.ai-privacy strong{font-size:11px}.ai-privacy p{font-size:10px;line-height:1.6;color:var(--muted);margin:6px 0}.ai-clear{margin-top:12px;width:100%;font-size:10px;padding:9px}
 @media(max-width:860px){.ai-layout{grid-template-columns:1fr}.ai-chat{height:300px}}
 </style>
@@ -380,7 +380,7 @@ renderUnits();updateStats();renderLesson();
 (()=>{
  const API='https://api.alstutor.com/api/tutor';
  const history=[];
- let attempts=0,busy=false;
+ let attempts=0,busy=false,recognition=null;
  const box=()=>document.getElementById('aiInput');
  function add(role,message,next,canSpeak){
   const log=document.getElementById('aiChat');if(!log)return;
@@ -392,6 +392,8 @@ renderUnits();updateStats();renderLesson();
   log.appendChild(item);log.scrollTop=log.scrollHeight;
  }
  function setStatus(text){const n=document.getElementById('aiStatus');if(n)n.textContent=text}
+ async function checkService(){try{const r=await fetch(API.replace('/api/tutor','/health'));if(r.ok)setStatus('AI tutor connected.');else setStatus('AI tutor is not connected yet; Lessons and Practice still work.')}catch(_){setStatus('AI tutor is not connected yet; Lessons and Practice still work.')}}
+ window.listenToAITutor=function(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition){setStatus('Voice input is unavailable here. Type your question instead.');return}if(!window.isSecureContext){setStatus('Microphone access requires a secure page.');return}if(recognition){try{recognition.abort()}catch(_){}}try{recognition=new Recognition();recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onstart=()=>setStatus('Listening… speak your question.');recognition.onresult=e=>{const text=e.results[0][0].transcript;const input=box();if(input){input.value=text;input.focus()}setStatus('I heard: “'+text+'”. Press Ask tutor when ready.');recognition=null};recognition.onerror=e=>{setStatus(e.error==='not-allowed'?'Microphone permission was denied. Type your question instead.':'Voice input stopped. Type your question instead.');recognition=null};recognition.onend=()=>{if(recognition)setStatus('Ready when you are.');recognition=null};recognition.start()}catch(_){recognition=null;setStatus('Could not start the microphone. Check browser permission, or type instead.')}};
  async function ask(text,forceSolution){
   if(busy)return;
   const value=(text||'').trim();if(!value)return;
@@ -416,7 +418,8 @@ renderUnits();updateStats();renderLesson();
  }
  window.sendAITutor=function(e){if(e)e.preventDefault();const x=box();ask(x?x.value:'',false)};
  window.aiQuick=function(text,solution){const x=box();if(!x)return;if(solution){ask(text,true);return}x.value=text;x.focus();if(/^I tried this step/i.test(text))x.setSelectionRange(x.value.length,x.value.length)};
- window.clearAITutor=function(){history.length=0;attempts=0;if(window.speechSynthesis)window.speechSynthesis.cancel();const log=document.getElementById('aiChat');if(log)log.replaceChildren();add('assistant','Conversation cleared. Share the problem and the step you are on, and we will start again.','',false);setStatus('Conversation cleared.')};
+ window.clearAITutor=function(){history.length=0;attempts=0;if(window.speechSynthesis)window.speechSynthesis.cancel();if(recognition){try{recognition.abort()}catch(_){}}recognition=null;const log=document.getElementById('aiChat');if(log)log.replaceChildren();add('assistant','Conversation cleared. Share the problem and the step you are on, and we will start again.','',false);setStatus('Conversation cleared.')};
+ checkService();
 })();
 </script>
 </body></html>
