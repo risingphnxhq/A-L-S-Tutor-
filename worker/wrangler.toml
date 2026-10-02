@@ -1,0 +1,22 @@
+name = "als-tutor-ai"
+main = "index.mjs"
+compatibility_date = "2026-10-02"
+workers_dev = false
+routes = [{ pattern = "api.alstutor.com", custom_domain = true }]
+
+[ai]
+binding = "AI"
+
+[[ratelimits]]
+name = "TUTOR_LIMITER"
+namespace_id = "174357921"
+simple = { limit = 8, period = 60 }
+
+[[durable_objects.bindings]]
+name = "DAILY_BUDGET"
+class_name = "DailyBudget"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["DailyBudget"]
+

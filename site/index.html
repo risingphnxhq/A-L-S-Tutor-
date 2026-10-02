@@ -22,6 +22,7 @@
   <button data-view="practice"><span class="ico">✳</span><span>Practice</span></button>
   <button data-view="voice"><span class="ico">♫</span><span>Voice tutor</span></button>
   <button data-view="coach"><span class="ico">◉</span><span>Study coach</span></button>
+  <button data-view="ai"><span class="ico">✧</span><span>AI tutor</span></button>
   <button data-view="family"><span class="ico">⌂</span><span>Family dashboard</span></button>
  </nav></div>
  <div class="side-bottom"><b>Your pace. Your progress.</b><br>Small steps build strong algebra.</div>
@@ -78,6 +79,32 @@
    <div class="section-head" style="margin-top:0"><div><div class="eyebrow">THINK IT THROUGH</div><h2>Study coach</h2><p style="margin-top:5px">Ask for a hint, a simpler explanation, or a check on your next step.</p></div></div>
    <div class="coach-grid"><div class="panel coach-card"><div class="eyebrow">TRY A PROMPT</div><h2>What would help right now?</h2><p>Choose a question to get a short nudge. The coach will guide your thinking before showing a full method.</p><div class="prompt-list"><button onclick="coachPrompt('Give me a hint for solving a linear equation.')">Give me a hint for solving a linear equation</button><button onclick="coachPrompt('How do I know whether to factor a quadratic?')">When should I factor a quadratic?</button><button onclick="coachPrompt('Explain function notation in plain language.')">Explain function notation simply</button><button onclick="coachPrompt('How can I check my answer?')">How can I check my answer?</button></div><div class="empty-note" style="margin-top:16px">This version uses built-in algebra coaching prompts. It does not connect to a live AI service, so it will not claim to understand arbitrary questions.</div></div>
     <div class="panel coach-card chat"><div class="eyebrow">COACHING NOTES</div><div class="chat-log" id="chatLog"><div class="bubble">Hi! Tell me what topic you are working on, or choose a prompt. I’ll offer a next step and a way to check your reasoning.</div></div><form class="chat-compose" onsubmit="sendCoach(event)"><input id="chatInput" placeholder="Try: help me check my answer" aria-label="Message study coach"><button>Ask</button></form></div></div>
+
+  <section id="ai" class="view">
+   <div class="section-head" style="margin-top:0"><div><div class="eyebrow">GOVERNED AI · COURSE 1200710</div><h2>AI tutor</h2><p style="margin-top:5px">A patient tutor that works through your algebra one step at a time.</p></div></div>
+   <div class="ai-layout">
+    <div class="panel ai-main">
+     <div class="ai-intro"><div class="ai-mark">∑</div><div><strong>Let’s work it out together.</strong><p>Share the problem and the step you’re on. I’ll give one hint at a time, explain another way, or check your reasoning.</p></div></div>
+     <div class="ai-quick" aria-label="Tutor actions">
+      <button type="button" onclick="aiQuick('Give me one small hint for the problem I shared.')">Give me a hint</button>
+      <button type="button" onclick="aiQuick('Explain the last step in a simpler way, using a small example if helpful.')">Explain another way</button>
+      <button type="button" onclick="aiQuick('I tried this step: ')">Check my step</button>
+      <button type="button" onclick="aiQuick('Please show the complete worked solution for the problem I shared.',true)">Show full solution</button>
+     </div>
+     <div class="ai-chat" id="aiChat" aria-live="polite" aria-label="Tutor conversation"><div class="ai-message tutor"><strong>Tutor</strong><p>Hi. Paste or type one algebra problem, then tell me what you have tried. We’ll take it one move at a time.</p></div></div>
+     <form class="ai-compose" onsubmit="sendAITutor(event)">
+      <label class="sr-only" for="aiInput">Your math problem or question</label><textarea id="aiInput" rows="3" maxlength="1200" placeholder="Type the problem and where you got stuck…" aria-label="Your math problem or question"></textarea>
+      <div class="ai-send-row"><span id="aiStatus" role="status">Ready when you are.</span><button class="btn" id="aiSend" type="submit">Ask tutor</button></div>
+     </form>
+    </div>
+    <aside class="panel ai-guide">
+     <div class="eyebrow">HOW THIS TUTOR WORKS</div><h3>Small steps. Real understanding.</h3>
+     <ol><li>It asks what you’re working on.</li><li>It offers a hint before a complete solution.</li><li>You try a step and can ask for feedback.</li><li>Lessons and Practice keep your progress checks clear.</li></ol>
+     <div class="ai-privacy"><strong>Your privacy</strong><p>This conversation stays in temporary browser memory and clears when you refresh. Your question and recent turns go to Cloudflare to create the reply. The app does not save chat transcripts. Leave out names, school details, and other personal information.</p><p>AI can make mistakes. Use Practice for scored answers; the AI tutor does not record mastery.</p></div>
+     <button class="btn outline ai-clear" type="button" onclick="clearAITutor()">Clear this conversation</button>
+    </aside>
+   </div>
+  </section>
   </section>
  </div>
 </main>
@@ -108,7 +135,7 @@ function markActiveDay(){let day=new Date().toISOString().slice(0,10);if(!state.
 function renderUnits(){document.getElementById('unitList').innerHTML=units.map((u,i)=>`<div class="unit"><div class="unit-icon">${u.icon}</div><div><h3>${i+1}. ${u.title}</h3><p>${u.desc}</p></div><div class="unit-meta"><small>${state.done.includes(u.id)?'Completed':'★ '+u.time}</small><button onclick="selectUnit('${u.id}')">${state.done.includes(u.id)?'Review →':'Open →'}</button></div></div>`).join('')}
 function selectUnit(id){currentUnit=id;openView('lessons');renderLesson()}
 function openLessons(){selectUnit(currentUnit)}
-function openView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));document.getElementById('crumbTitle').textContent=({home:'My learning',lessons:'Lessons',practice:'Practice',coach:'Study coach'})[id];if(id==='practice')renderQuestion();if(id==='lessons')renderLesson();if(id==='home')updateStats()}
+function openView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));document.getElementById('crumbTitle').textContent=({home:'My learning',lessons:'Lessons',practice:'Practice',coach:'Study coach',ai:'AI tutor'})[id];if(id==='practice')renderQuestion();if(id==='lessons')renderLesson();if(id==='home')updateStats()}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>openView(b.dataset.view)));
 function renderLesson(){let u=units.find(x=>x.id===currentUnit)||units[1];document.getElementById('lessonNav').innerHTML=units.map((x,i)=>`<button class="lesson-item ${x.id===u.id?'active':''}" onclick="selectUnit('${x.id}')"><span>${x.icon}</span><span>${i+1}. ${x.title}<small>${state.done.includes(x.id)?'Completed':'Guided lesson'}</small></span></button>`).join('');document.getElementById('lessonBody').innerHTML=`<div class="eyebrow">GUIDED LESSON · ${u.time.toUpperCase()}</div><h1>${u.title}</h1><p class="lead">${u.intro}</p><div class="learning-goals">${u.goal.map(g=>`<span class="pill">✓ ${g}</span>`).join('')}</div><div class="example"><h3>WORKED EXAMPLE</h3><div class="math">${u.example}</div><ol class="steps">${u.steps.map((s,i)=>`<li><span>${i+1}</span><div>${s}</div></li>`).join('')}</ol></div><div class="note"><b>Remember:</b> ${u.note}</div><div class="lesson-footer"><button class="btn outline" onclick="openView('practice');qIndex=0;renderQuestion()">Practice this topic</button><button class="btn secondary" onclick="completeUnit('${u.id}')">${state.done.includes(u.id)?'Lesson completed ✓':'Mark lesson complete'}</button></div>`}
 function completeUnit(id){if(!state.done.includes(id))state.done.push(id);markActiveDay();showToast('Lesson saved to your progress.');renderLesson();}
@@ -339,4 +366,57 @@ renderUnits();updateStats();renderLesson();
  .nav button{padding:8px 9px;font-size:10px}
 }
 </style>
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ai-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(240px,.8fr);gap:18px;align-items:start}
+.ai-main{padding:22px;min-width:0}.ai-intro{display:flex;gap:13px;align-items:flex-start;padding:4px 0 16px;border-bottom:1px solid var(--line)}.ai-mark{flex:none;width:38px;height:38px;display:grid;place-items:center;background:var(--mint);color:var(--green);border-radius:12px;font-weight:800}.ai-intro strong{font-size:14px}.ai-intro p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
+.ai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:14px 0}.ai-quick button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 10px;font-size:10px;color:var(--green)}.ai-quick button:hover{border-color:#8fb6a0;background:#f8fbf8}
+.ai-chat{height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 0 14px}.ai-message{max-width:92%;border-radius:13px;padding:11px 13px;background:#edf4ef;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.ai-message.student{align-self:flex-end;background:var(--green);color:#fff}.ai-message p{margin:5px 0 0}.ai-message strong{font-size:10px;letter-spacing:.04em}.ai-next{font-weight:700;color:#315f4d}.ai-message.student .ai-next{color:#fff}.ai-speak{border:0;background:transparent;color:var(--green);text-decoration:underline;font-size:10px;padding:7px 0 0}.ai-compose{border-top:1px solid var(--line);padding-top:12px}.ai-compose textarea{width:100%;resize:vertical;min-height:74px;border:1px solid #d6e0d9;border-radius:11px;padding:11px 13px;outline:none;font:inherit;font-size:12px}.ai-compose textarea:focus{border-color:#579778;box-shadow:0 0 0 3px #57977820}.ai-send-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:9px}.ai-send-row span{font-size:10px;color:var(--muted)}.ai-send-row button:disabled{opacity:.6;cursor:wait}
+.ai-guide{padding:21px}.ai-guide h3{margin:6px 0 10px;font-size:16px}.ai-guide ol{padding-left:18px;color:var(--muted);font-size:11px;line-height:1.65}.ai-guide li{padding:3px 0}.ai-privacy{margin-top:18px;border-radius:12px;background:#f7f8f4;padding:13px}.ai-privacy strong{font-size:11px}.ai-privacy p{font-size:10px;line-height:1.6;color:var(--muted);margin:6px 0}.ai-clear{margin-top:12px;width:100%;font-size:10px;padding:9px}
+@media(max-width:860px){.ai-layout{grid-template-columns:1fr}.ai-chat{height:300px}}
+</style>
+<script>
+(()=>{
+ const API='https://api.alstutor.com/api/tutor';
+ const history=[];
+ let attempts=0,busy=false;
+ const box=()=>document.getElementById('aiInput');
+ function add(role,message,next,canSpeak){
+  const log=document.getElementById('aiChat');if(!log)return;
+  const item=document.createElement('div');item.className='ai-message '+(role==='user'?'student':'tutor');
+  const label=document.createElement('strong');label.textContent=role==='user'?'You':'Tutor';item.appendChild(label);
+  const p=document.createElement('p');p.textContent=message;item.appendChild(p);
+  if(next){const n=document.createElement('p');n.className='ai-next';n.textContent=next;item.appendChild(n)}
+  if(role==='assistant'&&canSpeak&&'speechSynthesis'in window){const speak=document.createElement('button');speak.className='ai-speak';speak.type='button';speak.textContent='Read this aloud';speak.onclick=()=>{window.speechSynthesis.cancel();window.speechSynthesis.speak(new SpeechSynthesisUtterance(message+(next?' '+next:'')))};item.appendChild(speak)}
+  log.appendChild(item);log.scrollTop=log.scrollHeight;
+ }
+ function setStatus(text){const n=document.getElementById('aiStatus');if(n)n.textContent=text}
+ async function ask(text,forceSolution){
+  if(busy)return;
+  const value=(text||'').trim();if(!value)return;
+  const input=box();if(input)input.value='';
+  const checkStep=/^I tried this step\s*:/i.test(value);
+  if(checkStep)attempts=Math.min(2,attempts+1);
+  const explicit=Boolean(forceSolution)||/\b(show|give|reveal|write|work out|solve)\b.{0,45}\b(full|complete|entire|worked|solution|answer|steps?)\b/i.test(value);
+  add('user',value);history.push({role:'user',content:value});if(history.length>8)history.splice(0,history.length-8);
+  busy=true;const send=document.getElementById('aiSend');if(send)send.disabled=true;setStatus('Working through your question…');
+  try{
+   const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history,attempt_count:attempts,solution_requested:explicit})});
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok)throw new Error(data.error||'The tutor service is unavailable right now.');
+   if(!data||!['clarify','teach_step','hint','check_feedback','worked_solution','redirect'].includes(data.kind)||typeof data.message!=='string')throw new Error('The tutor returned an unreadable reply.');
+   add('assistant',data.message,data.next_prompt||'',true);
+   history.push({role:'assistant',content:data.message+(data.next_prompt?' '+data.next_prompt:'')});if(history.length>8)history.splice(0,history.length-8);
+   setStatus('Reply ready. Ask for another step or use the buttons above.');
+  }catch(error){
+   add('assistant','I could not reach the AI tutor just now. Your question was not saved. You can continue with the reviewed Lessons and Practice while the tutor service is restored.','Try again in a little while.',false);
+   setStatus(error&&error.message==='Failed to fetch'?'AI service is not connected yet.':'Tutor service unavailable.');
+  }finally{busy=false;if(send)send.disabled=false;if(input)input.focus()}
+ }
+ window.sendAITutor=function(e){if(e)e.preventDefault();const x=box();ask(x?x.value:'',false)};
+ window.aiQuick=function(text,solution){const x=box();if(!x)return;if(solution){ask(text,true);return}x.value=text;x.focus();if(/^I tried this step/i.test(text))x.setSelectionRange(x.value.length,x.value.length)};
+ window.clearAITutor=function(){history.length=0;attempts=0;if(window.speechSynthesis)window.speechSynthesis.cancel();const log=document.getElementById('aiChat');if(log)log.replaceChildren();add('assistant','Conversation cleared. Share the problem and the step you are on, and we will start again.','',false);setStatus('Conversation cleared.')};
+})();
+</script>
 </body></html>
