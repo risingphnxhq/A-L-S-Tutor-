@@ -79,7 +79,7 @@
    <div class="section-head" style="margin-top:0"><div><div class="eyebrow">THINK IT THROUGH</div><h2>Study coach</h2><p style="margin-top:5px">Ask for a hint, a simpler explanation, or a check on your next step.</p></div></div>
    <div class="coach-grid"><div class="panel coach-card"><div class="eyebrow">TRY A PROMPT</div><h2>What would help right now?</h2><p>Choose a question to get a short nudge. The coach will guide your thinking before showing a full method.</p><div class="prompt-list"><button onclick="coachPrompt('Give me a hint for solving a linear equation.')">Give me a hint for solving a linear equation</button><button onclick="coachPrompt('How do I know whether to factor a quadratic?')">When should I factor a quadratic?</button><button onclick="coachPrompt('Explain function notation in plain language.')">Explain function notation simply</button><button onclick="coachPrompt('How can I check my answer?')">How can I check my answer?</button></div><div class="empty-note" style="margin-top:16px">This version uses built-in algebra coaching prompts. It does not connect to a live AI service, so it will not claim to understand arbitrary questions.</div></div>
     <div class="panel coach-card chat"><div class="eyebrow">COACHING NOTES</div><div class="chat-log" id="chatLog"><div class="bubble">Hi! Tell me what topic you are working on, or choose a prompt. I’ll offer a next step and a way to check your reasoning.</div></div><form class="chat-compose" onsubmit="sendCoach(event)"><input id="chatInput" placeholder="Try: help me check my answer" aria-label="Message study coach"><button>Ask</button></form></div></div>
-
+  </section>
   <section id="ai" class="view">
    <div class="section-head" style="margin-top:0"><div><div class="eyebrow">GOVERNED AI · COURSE 1200710</div><h2>AI tutor</h2><p style="margin-top:5px">A patient tutor that works through your algebra one step at a time.</p></div></div>
    <div class="ai-layout">
@@ -104,7 +104,6 @@
      <button class="btn outline ai-clear" type="button" onclick="clearAITutor()">Clear this conversation</button>
     </aside>
    </div>
-  </section>
   </section>
  </div>
 </main>
