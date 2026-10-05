@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183a55">
+  <meta name="description" content="Short, step-by-step Florida Grade 3 FAST Reading and Math practice from Angela Learning Engine.">
+  <title>Angela Learning Engine · Grade 3 FAST Practice</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Angela Learning Engine home">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span><strong>Angela Learning Engine</strong><small>Grade 3 Florida FAST practice</small></span>
+    </a>
+    <a class="als-link" href="https://alstutor.com/">A. L. S. Tutor <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="app" class="shell">
+    <section id="home" class="screen active" aria-labelledby="welcome-title">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">SMALL STEPS. STRONGER SKILLS.</span>
+          <h1 id="welcome-title">Let’s get ready for Grade 3 FAST.</h1>
+          <p>Learn one idea, see each step, then try a few questions. You can take your time. Mistakes show us what to practice next.</p>
+          <div class="hero-actions">
+            <button class="button primary" data-action="start-check">Start a 7-question check <span aria-hidden="true">→</span></button>
+            <button class="button light" data-action="browse">Choose a skill</button>
+          </div>
+          <p class="time-note"><span aria-hidden="true">◷</span> About 10 minutes · No timer · No grades</p>
+        </div>
+        <div class="hero-art" aria-hidden="true"><span class="sun">✦</span><span class="book">A + 3</span><span class="leaf leaf-one"></span><span class="leaf leaf-two"></span></div>
+      </div>
+
+      <div class="welcome-grid">
+        <article class="welcome-card reading-card">
+          <div class="card-icon" aria-hidden="true">📖</div>
+          <div><span class="eyebrow">READING</span><h2>Read, notice, explain</h2><p>Practice stories, poems, nonfiction, vocabulary, and using clues from a text.</p><button class="text-button" data-action="subject" data-subject="reading">Explore Reading <span aria-hidden="true">→</span></button></div>
+        </article>
+        <article class="welcome-card math-card">
+          <div class="card-icon" aria-hidden="true">🧩</div>
+          <div><span class="eyebrow">MATH</span><h2>Build it one step at a time</h2><p>Practice numbers, multiplication, fractions, shapes, measurement, and data.</p><button class="text-button" data-action="subject" data-subject="math">Explore Math <span aria-hidden="true">→</span></button></div>
+        </article>
+      </div>
+
+      <section class="quick-tools" aria-label="Learning tools">
+        <button class="tool-card" data-action="mixed-check"><span>📝</span><span><strong>10-question practice</strong><small>5 Reading + 5 Math questions · about 15 min</small></span><b aria-hidden="true">→</b></button>
+        <button class="tool-card" data-action="progress"><span>🌱</span><span><strong>My progress</strong><small>See what you have practiced</small></span><b aria-hidden="true">→</b></button>
+      </section>
+    </section>
+
+    <section id="subject" class="screen" aria-labelledby="subject-title">
+      <button class="back-button" data-action="home">← Home</button>
+      <div class="section-heading"><div><span id="subject-eyebrow" class="eyebrow"></span><h1 id="subject-title"></h1><p id="subject-intro"></p></div><button class="button primary" data-action="subject-check">Take a short check</button></div>
+      <div id="skill-grid" class="skill-grid"></div>
+    </section>
+
+    <section id="lesson" class="screen" aria-labelledby="lesson-title">
+      <button class="back-button" data-action="back-subject">← All skills</button>
+      <article class="lesson-panel">
+        <div class="lesson-heading"><span id="lesson-subject" class="eyebrow"></span><span id="lesson-time" class="lesson-time">About 5 minutes</span></div>
+        <h1 id="lesson-title"></h1>
+        <p id="lesson-goal" class="lesson-goal"></p>
+        <div id="lesson-model" class="model-card"></div>
+        <div id="lesson-steps" class="step-list"></div>
+        <div id="lesson-tip" class="remember-box"></div>
+        <div class="lesson-actions"><button class="button primary" data-action="lesson-practice">Try 3 questions <span aria-hidden="true">→</span></button><button class="button light" data-action="back-subject">Choose a different skill</button></div>
+      </article>
+    </section>
+
+    <section id="quiz" class="screen" aria-labelledby="quiz-title">
+      <button class="back-button" data-action="quiz-exit">← Leave check</button>
+      <article class="quiz-panel">
+        <div class="quiz-heading"><div><span id="quiz-label" class="eyebrow">SHORT PRACTICE</span><h1 id="quiz-title">One question at a time</h1></div><span id="quiz-count" class="quiz-count"></span></div>
+        <div class="progress-track" aria-hidden="true"><div id="quiz-progress" class="progress-fill"></div></div>
+        <div id="quiz-content" class="quiz-content"></div>
+        <div id="quiz-feedback" class="feedback" aria-live="polite"></div>
+        <div id="quiz-actions" class="quiz-actions"></div>
+      </article>
+    </section>
+
+    <section id="results" class="screen" aria-labelledby="results-title">
+      <article class="results-panel">
+        <span class="result-spark" aria-hidden="true">✦</span>
+        <span class="eyebrow">CHECK COMPLETE</span>
+        <h1 id="results-title">You kept going!</h1>
+        <p id="results-message"></p>
+        <div id="result-breakdown" class="result-breakdown"></div>
+        <div id="result-next" class="result-next"></div>
+        <div class="result-actions"><button class="button primary" data-action="review-next">Practice the next step</button><button class="button light" data-action="home">Back home</button></div>
+      </article>
+    </section>
+
+    <section id="progress" class="screen" aria-labelledby="progress-title">
+      <button class="back-button" data-action="home">← Home</button>
+      <div class="section-heading"><div><span class="eyebrow">YOUR WORK SO FAR</span><h1 id="progress-title">My progress</h1><p>This is practice evidence, not a school grade or an official FAST score.</p></div></div>
+      <div class="progress-summary"><div><strong id="progress-sessions">0</strong><span>checks tried</span></div><div><strong id="progress-answers">0</strong><span>questions answered</span></div><div><strong id="progress-skills">0</strong><span>skills practiced</span></div></div>
+      <div id="progress-list" class="progress-list"></div>
+      <p class="privacy-note">Progress is saved only in this browser on this device. No student name, school, or tutor conversation is collected.</p>
+      <button class="button light" data-action="clear-progress">Clear this device’s progress</button>
+    </section>
+
+    <footer class="site-footer">
+      <p><strong>Practice tool, not the state test.</strong> Questions here are original practice questions. They do not predict an official FAST score.</p>
+      <details><summary>For families: what is this aligned to?</summary><p>Florida’s FAST Reading and Mathematics assessments are aligned to B.E.S.T. Standards. This practice tool follows the state’s published Grade 3 reporting categories and examples of skills. It is supplemental practice, not a replacement for school instruction.</p><ul><li><a href="https://www.fldoe.org/accountability/assessments/k-12-student-assessment/best/" target="_blank" rel="noopener">Florida FAST assessment resources</a></li><li><a href="https://www.fldoe.org/core/fileparse.php/20102/urlt/TDS-FAST-ELA.pdf" target="_blank" rel="noopener">FAST ELA Reading blueprint</a></li><li><a href="https://www.fldoe.org/core/fileparse.php/20102/urlt/TDS-FAST-Math.pdf" target="_blank" rel="noopener">FAST Mathematics blueprint</a></li></ul></details>
+    </footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
