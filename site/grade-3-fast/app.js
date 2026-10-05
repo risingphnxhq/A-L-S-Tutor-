@@ -227,20 +227,32 @@
   function selectQuestions(mode, subject, skillId) {
     if (mode === 'skill') {
       const skill = getSkill(skillId);
-      return [skill.questions[0], skill.questions[2], skill.questions[4]];
+      const session = state.checks.filter(check => check.mode === 'skill' && check.skillId === skillId).length;
+      const offset = (session * 3) % skill.questions.length;
+      return [0, 1, 2].map(step => skill.questions[(offset + step) % skill.questions.length]);
     }
     if (mode === 'subject') {
       const subjectSkills = skillsFor(subject);
-      if (subject === 'reading') return [subjectSkills[0].questions[0], subjectSkills[1].questions[0], subjectSkills[2].questions[0], subjectSkills[2].questions[1], subjectSkills[2].questions[3]];
-      return [...subjectSkills.map(skill => skill.questions[0]), subjectSkills[0].questions[3]];
+      const session = state.checks.filter(check => check.mode === 'subject' && check.subject === subject).length;
+      if (subject === 'reading') return [
+        subjectSkills[0].questions[session % 5], subjectSkills[1].questions[(session + 1) % 5],
+        subjectSkills[2].questions[(session + 2) % 5], subjectSkills[2].questions[(session + 3) % 5],
+        subjectSkills[2].questions[(session + 4) % 5]
+      ];
+      return [...subjectSkills.map((skill, index) => skill.questions[(session + index) % 5]), subjectSkills[session % subjectSkills.length].questions[(session + 3) % 5]];
     }
     const reading = skillsFor('reading');
     const math = skillsFor('math');
-    if (mode === 'diagnostic') return [...reading.map(skill => skill.questions[0]), ...math.map(skill => skill.questions[0])];
-    return [reading[0].questions[0], reading[0].questions[1], reading[1].questions[0], reading[1].questions[1], reading[2].questions[0], math[0].questions[0], math[0].questions[1], math[1].questions[0], math[2].questions[0], math[3].questions[0]];
+    if (mode === 'diagnostic') {
+      const session = state.checks.filter(check => check.mode === 'diagnostic').length;
+      return [...reading.map((skill, index) => skill.questions[(session + index) % 5]), ...math.map((skill, index) => skill.questions[(session + index) % 5])];
+    }
+    const session = state.checks.filter(check => check.mode === 'mixed').length;
+    return [reading[0].questions[session % 5], reading[1].questions[(session + 1) % 5], reading[2].questions[session % 5], reading[2].questions[(session + 1) % 5], reading[2].questions[(session + 2) % 5], ...math.map((skill, index) => skill.questions[(session + index) % 5]), math[session % math.length].questions[(session + 4) % 5]];
   }
 
   function beginQuiz(mode, subject = null, skillId = null) {
+    if (mode === 'skill') subject = getSkill(skillId).subject;
     const questions = selectQuestions(mode, subject, skillId);
     quiz = { mode, subject, skillId, questions, index: 0, attempts: {}, solved: 0, firstTry: 0, misses: {}, usedHint: false };
     $('#quiz-label').textContent = mode === 'skill' ? '3-QUESTION SKILL PRACTICE' : mode === 'subject' ? `${subject === 'reading' ? 'READING' : 'MATH'} · SHORT CHECK` : mode === 'diagnostic' ? 'GENTLE STARTING CHECK' : 'SHORT MIXED CHECK';
@@ -325,7 +337,7 @@
   function finishQuiz() {
     if (!quiz) return;
     $('#quiz-progress').style.width = '100%';
-    state.checks.push({ mode: quiz.mode, subject: quiz.subject || 'mixed', count: quiz.questions.length, solved: quiz.solved, firstTry: quiz.firstTry, at: new Date().toISOString() });
+    state.checks.push({ mode: quiz.mode, subject: quiz.subject || 'mixed', skillId: quiz.skillId, count: quiz.questions.length, solved: quiz.solved, firstTry: quiz.firstTry, at: new Date().toISOString() });
     saveState();
     const missed = quiz.questions.filter(question => quiz.misses[question.id]);
     lastWeakSkill = missed.length ? SKILLS.find(skill => skill.questions.some(question => question.id === missed[0].id)) : null;
